@@ -1,0 +1,84 @@
+/****************************/
+/* Links table header style */
+/****************************/
+
+th {
+   height:30px;
+   color:white;
+   text-shadow: darkslateblue 1px 1px;
+   text-align: center;
+   background-color:lightblue;
+   min-width:20px;
+}
+
+.linkTableHeaderStyle {
+    border-right:2px solid white;
+    padding-right:20px;
+}
+
+.chkColmnClass {
+    width:20px;
+}
+
+/*****************************/
+/* Links table columns style */
+/*****************************/
+
+.linksTableCellClass {
+    border-right:2px solid lightblue;
+    overflow-x: auto;
+}
+
+.filterDescClass {
+    width:110px;
+    color:#4b0082;
+    vertical-align: middle
+}
+
+/****************/
+/* Tables style */
+/****************/
+
+#linksTableId {
+    border: 0;
+    width:100%;
+}
+
+#divDownlaodList {
+    overflow-x: hidden;
+}
+
+/****************************/
+/* Misc style */
+/****************************/
+
+.downloadMasterFont
+ {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: lighter;
+    font-size: 14px;
+    line-height: normal;
+    font-family: tahoma;
+}
+
+#divFooter {
+    height: 39px;
+}
+
+label {
+	color:#0361ae;
+}
+
+.extensionHeader
+ {
+    color:#4b0082;
+    background-color:white;
+    font: 34px tahoma;
+    height:48px;
+}
+
+.header_tbl {
+    width:100%;
+    border:0;
+}

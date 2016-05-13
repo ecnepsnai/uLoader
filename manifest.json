@@ -1,0 +1,20 @@
+{
+	"name": "μLoader",
+	"version": "1.0",
+	"manifest_version": 2,
+	"author": "Ian Spence",
+	"description": "Quickly and easily download all files linked on any site.",
+	"icons":
+		{
+			"16": "microLoader/images/icon_16x16.png",
+			"48": "microLoader/images/icon_48x48.png",
+			"128": "microLoader/images/icon_128x128.png"
+		},
+	"browser_action":
+		{
+			"default_icon": "microLoader/images/icon.png",
+			"default_popup": "microLoader/main.html"
+		},
+	"permissions": ["tabs", "http://*/", "https://*/"],
+	"offline_enabled": true
+}
