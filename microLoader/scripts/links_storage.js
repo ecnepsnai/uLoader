@@ -1,6 +1,4 @@
-///////////////////////////////////////////////////////////
 // Contructor
-///////////////////////////////////////////////////////////
 function LinksStorage() {
     this.ext2ids = [];
     this.id2link = [];
@@ -11,29 +9,26 @@ function LinksStorage() {
     this.nameMaxWidth = 0;
 }
 
-
-///////////////////////////////////////////////////////////
 // manage size
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.addSuspectGoodId = function (id) {
+LinksStorage.prototype.addSuspectGoodId = function(id) {
     this.sizableIds.push(id);
 };
-LinksStorage.prototype.getSuspectGoodIds = function () {
+LinksStorage.prototype.getSuspectGoodIds = function() {
     return this.sizableIds;
 };
-LinksStorage.prototype.addSize = function (id, size) {
+LinksStorage.prototype.addSize = function(id, size) {
     this.id2Size[id] = size;
 };
-LinksStorage.prototype.getSize = function (id) {
+LinksStorage.prototype.getSize = function(id) {
     return this.id2Size[id];
 };
 
-///////////////////////////////////////////////////////////
 // manage names
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.addName = function (id, name) {
+LinksStorage.prototype.addName = function(id, name) {
 
-    if (name === undefined) return;
+    if (name === undefined) {
+        return;
+    }
 
     this.id2Name[id] = name;
 
@@ -45,20 +40,18 @@ LinksStorage.prototype.addName = function (id, name) {
     $(s).remove();
 };
 
-LinksStorage.prototype.getName = function (id) {
+LinksStorage.prototype.getName = function(id) {
     return this.id2Name[id];
 };
 
-///////////////////////////////////////////////////////////
 // Add link (filter and sort)
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.addLink = function (link) {
+LinksStorage.prototype.addLink = function(link) {
     try {
 
         // Validate extension
         var extension = utils.getExtensionFromUrl(link);
         if (utils.isExtensionLegal(extension) === false) {
-            extension = "unknown";
+            extension = 'unknown';
         }
 
         // Create ids array for extension
@@ -86,10 +79,8 @@ LinksStorage.prototype.addLink = function (link) {
     } catch (e) { utils.alertExceptionDetails(e); }
 };
 
-///////////////////////////////////////////////////////////
 // Return Array<id,link>
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.getAllLinks = function () {
+LinksStorage.prototype.getAllLinks = function() {
     try {
         var allLinks = [];
 
@@ -109,10 +100,8 @@ LinksStorage.prototype.getAllLinks = function () {
     }
 };
 
-///////////////////////////////////////////////////////////
 // Return Array<id,link>
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.getAllIds = function () {
+LinksStorage.prototype.getAllIds = function() {
     try {
         var allIds = [];
 
@@ -132,10 +121,8 @@ LinksStorage.prototype.getAllIds = function () {
     }
 };
 
-///////////////////////////////////////////////////////////
 // Return Array<extensions>
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.getExtensions = function () {
+LinksStorage.prototype.getExtensions = function() {
     var extArr = [];
 
     for (var extension in this.ext2ids) {
@@ -145,20 +132,16 @@ LinksStorage.prototype.getExtensions = function () {
     return extArr;
 };
 
-///////////////////////////////////////////////////////////
 // Return Array<id,link>
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.getIds = function (extension) {
+LinksStorage.prototype.getIds = function(extension) {
     return this.ext2ids[extension];
 };
 
-///////////////////////////////////////////////////////////
 // Misc
-///////////////////////////////////////////////////////////
-LinksStorage.prototype.getLink = function (id) {
+LinksStorage.prototype.getLink = function(id) {
     return this.id2link[id];
 };
 
-LinksStorage.prototype.length = function () {
+LinksStorage.prototype.length = function() {
     return this.id;
 };

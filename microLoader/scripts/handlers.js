@@ -1,21 +1,14 @@
-////////////////////////////////////////////////////////////////////
-/// On link checkbox check
-////////////////////////////////////////////////////////////////////
+// On link checkbox check
 function onLinkCheck() {
-
     // Link checked
     if (window.event.srcElement.checked === true) {
         selectLink(window.event.srcElement.id);
-    }
-    else { // Link unchecked
+    } else { // Link unchecked
         unselectLink(window.event.srcElement.id);
     }
 }
 
-
-////////////////////////////////////////////////////////////////////
-/// Change link checkbox state
-////////////////////////////////////////////////////////////////////
+// Change link checkbox state
 function selectLink(linkId) {
     $('#' + linkId).attr('checked', true); // check the link
     changeLinkColor(linkId, SELECTED_LINK_COLOR);
@@ -23,7 +16,7 @@ function selectLink(linkId) {
 }
 
 function unselectLink(linkId) {
-    $('#' + linkId).attr('checked',false); // uncheck link
+    $('#' + linkId).attr('checked', false); // uncheck link
     changeLinkColor(linkId, UNSELECTED_LINK_COLOR);
     moveLinkToBottom(linkId);
 }
@@ -39,75 +32,55 @@ function moveLinkToTop(linkId) {
 }
 
 function moveLinkToBottom(linkId) {
-    var link = $('#'+LINK_ROW_ELEM_ID_PREFIX + linkId);
+    var link = $('#' + LINK_ROW_ELEM_ID_PREFIX + linkId);
     $(link).remove();
-    $('#'+LINKS_TABLE_ID).append(link);
+    $('#' + LINKS_TABLE_ID).append(link);
 }
 
 function unselectAllLinks() {
-    var allIds = gLinksStorage.getAllIds();
-    for (var i = 0; i < allIds.length; ++i) {
-        unselectLink(allIds[i]);
-    }
+    gLinksStorage.getAllIds().forEach(function(id) {
+        unselectLink(id);
+    });
 }
 
-
-////////////////////////////////////////////////////////////////////
-/// Hide irelevant links on filter activation
-////////////////////////////////////////////////////////////////////
-var onFilterCheck = function () {
+// Hide irelevant links on filter activation
+var onFilterCheck = function() {
     try {
-
         clearCustomFilter();
-
-        var filteredLinksIds = gLinksStorage.getIds(window.event.srcElement.name);
-
-        // For all ids of current filter
-        for (var i = 0; i < filteredLinksIds.length; ++i) {
-
+        gLinksStorage.getIds(window.event.srcElement.name).forEach(function(link) {
             // Filter checked
             if (window.event.srcElement.checked === true) {
-                selectLink(filteredLinksIds[i]);
+                selectLink(link);
+            } else { // Filter unchecked
+                unselectLink(link);
             }
-            else { // Filter unchecked
-                unselectLink(filteredLinksIds[i]);
-            }
-        }
+        });
     }
     catch (exc) {
         utils.alertExceptionDetails(exc);
     }
 };
 
-////////////////////////////////////////////////////////////////////
-/// Master filter sets\unsets all other filters
-////////////////////////////////////////////////////////////////////
-var onMasterFilterCheck = function () {
+// Master filter sets\unsets all other filters
+var onMasterFilterCheck = function() {
     try {
+        gLinksStorage.getExtensions().forEach(function(extension) {
+            document.getElementsByName(extension)[0].checked = window.event.srcElement.checked;
 
-        var extArr = gLinksStorage.getExtensions();
-
-        for (var i = 0; i < extArr.length; ++i) {
-            document.getElementsByName(extArr[i])[0].checked = window.event.srcElement.checked;
-
-            window.event.srcElement.name = extArr[i];
+            window.event.srcElement.name = extension;
             onFilterCheck();
-        }
+        });
 
     } catch (e) { utils.alertExceptionDetails(e); }
 };
 
-////////////////////////////////////////////////////////////////////
-/// Handle hide irrelevant
-////////////////////////////////////////////////////////////////////
-var onShowAllLinksClick = function () {
-
+// Handle hide irrelevant
+var onShowAllLinksClick = function() {
     if (window.event.srcElement.checked === true) {
         // checked
         displayAllLinks();
         utils.trackCheckbox(GA_ON_CHK_DISPLAY_ALL_LINKS);
-    }
-    else {
+    } else {
         // unchecked
         hideIrelevantLinks();
         utils.trackCheckbox(GA_ON_UNCHK_DISPLAY_ALL_LINKS);
@@ -115,57 +88,50 @@ var onShowAllLinksClick = function () {
 };
 
 function displayAllLinks() {
-    var allLinks = gLinksStorage.getAllLinks();
-    for (var id in allLinks) {
-
-        if (utils.isSuspectGoodLink(id) === false) {
+    gLinksStorage.getAllLinks().forEach(function(link) {
+        if (utils.isSuspectGoodLink(link) === false) {
             // TODO: need a way to identify the source of this function (file, namespace, prototype) , use namespace e.g. var builder = {};
             // the [0] is conversion from jquery selector to DOM elelment
-            buildLinkRow($('#' + LINKS_TBL_BODY_ID)[0], id);
+            buildLinkRow($('#' + LINKS_TBL_BODY_ID)[0], link);
         }
-    }
+    });
 
     // TODO: need a way to identify the source of this function (file, namespace, prototype)  , use namespace e.g. var builder = {};
     setExtensionPageHeight(document.body);
 }
 
 function hideIrelevantLinks() {
-    var allLinks = gLinksStorage.getAllLinks();
-    for (var id in allLinks) {
-        if (utils.isSuspectGoodLink(id) === false) {
-            $('#' + LINK_ROW_ELEM_ID_PREFIX + id).remove();
+    gLinksStorage.getAllLinks().forEach(function(link) {
+        if (utils.isSuspectGoodLink(link) === false) {
+            $('#' + LINK_ROW_ELEM_ID_PREFIX + link).remove();
         }
-    }
+    });
 }
 
-////////////////////////////////////////////////////////////////////
-/// Custom filter
-////////////////////////////////////////////////////////////////////
+// Custom filter
 function applyCustomFilter() {
-
     var filterStr = window.event.srcElement.value.toLowerCase();
 
     // uncheck all file extensions filters
     var extFilters = document.getElementById(EXT_FILTERS_DIV_ID).getElementsByTagName('input');
-    for (var n = 0; n < extFilters.length; ++n) {
-        extFilters[n].checked = false;
-    }
+    extFilters.forEach(function(filter) {
+        filter.checked = false;
+    });
 
     // Uncheck on empty filter string
-    if ($.trim(filterStr) === "") {
+    if ($.trim(filterStr) === '') {
         unselectAllLinks();
         return;
     }
 
     // search string might be a regular expression
     var match, regex;
-    try{
+    try {
         match = filterStr.match(new RegExp('^/(.*?)/(g?i?m?y?)$'));
         if (match !== null) {
             regex = new RegExp(match[1], match[2]);
         }
-    }
-    catch (exc) {
+    } catch (exc) {
         utils.alertExceptionDetails(exc);
     }
 
@@ -178,8 +144,7 @@ function applyCustomFilter() {
     };
 
     // apply filter string
-    for (var i = 0; i < gLinksStorage.length(); ++i) {
-
+    for (var i = gLinksStorage.length() - 1; i >= 0; i--) {
         if (stringInFullLink(i) || fullLinkRegex(i) || gLinksStorage.getName(i) !== undefined &&
             (stringInFullLink(i) || fullLinkRegex(i))) {
             selectLink(i);
@@ -190,7 +155,6 @@ function applyCustomFilter() {
 }
 
 function clearCustomFilter() {
-
     // Check if custom filter exists
     if (document.getElementById(CUSTOM_FILTER_INPUT_ID) === undefined) {
         return;
@@ -199,26 +163,20 @@ function clearCustomFilter() {
     if (document.getElementById(CUSTOM_FILTER_INPUT_ID).value !== '') {
         unselectAllLinks();
     }
-    document.getElementById(CUSTOM_FILTER_INPUT_ID).value = "";
+    document.getElementById(CUSTOM_FILTER_INPUT_ID).value = '';
 }
 
 function onDownloadClick() {
-
     try {
-
-        // Google Analytic event
-        utils.trackButton("download_button");
-
         // Get all checked links
         var checkedLinks = [];
 
-        var inputTags = document.getElementsByTagName('input');
-        for (var i = 0; i < inputTags.length; i++) {
-            if (inputTags[i].type == "checkbox" && inputTags[i].id !== "" && inputTags[i].checked) {
-                var linkId = inputTags[i].id.toString().replace(LINK_ROW_ELEM_ID_PREFIX, '');
+        document.getElementsByTagName('input').forEach(function(input) {
+            if (input.type == 'checkbox' && input.id !== '' && input.checked) {
+                var linkId = input.id.toString().replace(LINK_ROW_ELEM_ID_PREFIX, '');
                 checkedLinks.push(gLinksStorage.getLink(linkId));
             }
-        }
+        });
 
         // Don't send message with empty list
         if (checkedLinks.length < 1) {

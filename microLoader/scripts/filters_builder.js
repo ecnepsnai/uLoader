@@ -1,6 +1,4 @@
-////////////////////////////////////////////////////////////////////
-/// Build extension page with links received from content script
-////////////////////////////////////////////////////////////////////
+// Build extension page with links received from content script
 function buildFilterDescClmn(parentElem, className, title) {
     var descColmn = document.createElement('td');
     descColmn.setAttribute('class', className);
@@ -10,7 +8,7 @@ function buildFilterDescClmn(parentElem, className, title) {
 
 function buildCheckbox(parentElem, text, onClickCallback) {
     var input = document.createElement('input');
-    input.type = "checkbox";
+    input.type = 'checkbox';
     input.name = text;
     input.checked = false;
     input.onclick = onClickCallback;
@@ -27,10 +25,9 @@ function buildExtFilterRow(parentElem) {
     extFilterDiv.id = EXT_FILTERS_DIV_ID;
 
     // Add filters checkboxes
-    var extensionsArr = gLinksStorage.getExtensions();
-    for (var i = 0; i < extensionsArr.length; ++i) {
-        buildCheckbox(extFilterDiv, extensionsArr[i], onFilterCheck);
-    }
+    gLinksStorage.getExtensions().forEach(function(extension) {
+        buildCheckbox(extFilterDiv, extension, onFilterCheck);
+    });
 
     // Add master filter only in case there are more than one filters
     if (extFilterDiv.childNodes.length > 2) {
@@ -39,7 +36,7 @@ function buildExtFilterRow(parentElem) {
 
     var row = document.createElement('tr');
 
-    buildFilterDescClmn(row, 'filterDescClass', "Extension filters:");
+    buildFilterDescClmn(row, 'filterDescClass', 'Extension filters:');
 
     var fltrClmn = document.createElement('td');
     fltrClmn.appendChild(extFilterDiv);
@@ -54,11 +51,11 @@ function buildCustomFilterRow(parentElem) {
 
     // Build custom text filter
     var customTextFilter = document.createElement('input');
-    customTextFilter.type = "textbox";
-    customTextFilter.autofocus = "autofocus";
+    customTextFilter.type = 'textbox';
+    customTextFilter.autofocus = 'autofocus';
     customTextFilter.id = CUSTOM_FILTER_INPUT_ID;
     customTextFilter.setAttribute('class', DM_FONT_CLASS);
-    customTextFilter.onkeyup = function () { applyCustomFilter(); };
+    customTextFilter.onkeyup = function() { applyCustomFilter(); };
 
     cstmFilterDiv.appendChild(customTextFilter);
 
@@ -95,11 +92,11 @@ function buildFiltersDiv(parentElem) {
 
         // Build the table
         var table = document.createElement('table');
-        table.width = "97%";
-        table.cellspacing = "0";
-        table.cellpadding = "0";
-        table.border = "0";
-        table.setAttribute('class',DM_FONT_CLASS);
+        table.width = '97%';
+        table.cellspacing = '0';
+        table.cellpadding = '0';
+        table.border = '0';
+        table.setAttribute('class', DM_FONT_CLASS);
 
         buildExtFilterRow(table); // Build first row of filter by file extension
 

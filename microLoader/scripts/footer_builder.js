@@ -1,9 +1,6 @@
-////////////////////////////////////////////////////////////////////
-/// Append download button and path input to given element
-////////////////////////////////////////////////////////////////////
+// Append download button and path input to given element
 function appendDownloadElements(parentElement) {
     try {
-
         var downloadElemsDiv = document.createElement('div');
 
         // Add download button
@@ -11,7 +8,7 @@ function appendDownloadElements(parentElement) {
         buttonElm.setAttribute('class', DM_FONT_CLASS);
         buttonElm.type = 'button';
         buttonElm.innerHTML = 'Download';
-        buttonElm.onclick = function () { onDownloadClick(this); };
+        buttonElm.onclick = function() { onDownloadClick(this); };
         downloadElemsDiv.appendChild(buttonElm);
 
         parentElement.appendChild(downloadElemsDiv);
@@ -21,9 +18,7 @@ function appendDownloadElements(parentElement) {
     }
 }
 
-////////////////////////////////////////////////////////////////////
-/// Build footer
-////////////////////////////////////////////////////////////////////
+// Build footer
 function buildFooter(parentElem) {
 
     var footerDiv = document.createElement('div');
@@ -40,10 +35,10 @@ function buildFooter(parentElem) {
     row.appendChild(leftClm);
 
     var table = document.createElement('table');
-    table.width = "100%";
-    table.cellspacing = "0";
-    table.cellpadding = "0";
-    table.border = "0";
+    table.width = '100%';
+    table.cellspacing = '0';
+    table.cellpadding = '0';
+    table.border = '0';
     table.appendChild(row);
 
     footerDiv.appendChild(table);

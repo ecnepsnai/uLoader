@@ -1,6 +1,4 @@
-////////////////////////////////////////////////////////////////////
-/// Build delimiter
-////////////////////////////////////////////////////////////////////
+// Build delimiter
 function buildDelimiter(parentElem) {
 
     var delimDiv = document.createElement('div');
@@ -10,10 +8,7 @@ function buildDelimiter(parentElem) {
     parentElem.appendChild(delimDiv);
 }
 
-
-////////////////////////////////////////////////////////////////////
-/// Build message div
-////////////////////////////////////////////////////////////////////
+// Build message div
 function buildMessageDiv(message) {
     var noLinksMsgDiv = document.getElementById(NO_LINKS_MESSAGE_DIV_ID);
 
@@ -26,39 +21,47 @@ function buildMessageDiv(message) {
 }
 
 function displayProgressMessage(linksAmount) {
-    buildMessageDiv("Found " + linksAmount + " files, preparing the display (don't give up) ...");
+    buildMessageDiv('Found ' + linksAmount + ' files, preparing the display (don\'t give up) ...');
 }
 function clearDefaultMessage() {
     var noLinksMsgDiv = document.getElementById(NO_LINKS_MESSAGE_DIV_ID);
-    var childArr = noLinksMsgDiv.childNodes;
 
-    for (var i = 0; i < childArr.length; ++i) {
-        noLinksMsgDiv.removeChild(childArr[i]);
-    }
-    noLinksMsgDiv.innerHTML = "";
+    noLinksMsgDiv.childNodes.forEach(function(node) {
+        noLinksMsgDiv.removeChild(node);
+    });
+
+    noLinksMsgDiv.innerHTML = '';
 }
 function linksMsgToGlobalStorage(msg) {
     var linksCnt = msg.links.length;
     for (var i = 0; i < linksCnt; ++i) {
         var linkMsg = msg.links.pop();
-
         var linkStoreId;
 
-        try { linkStoreId = gLinksStorage.addLink(decodeURIComponent(linkMsg.link)); } catch (e) { linkStoreId = gLinksStorage.addLink(linkMsg.link); }
+        try {
+            linkStoreId = gLinksStorage.addLink(decodeURIComponent(linkMsg.link));
+        } catch (e) {
+            linkStoreId = gLinksStorage.addLink(linkMsg.link);
+        }
 
-        if (linkMsg.linkName !== undefined && $.trim(linkMsg.linkName) !== "") {
-            try { gLinksStorage.addName(linkStoreId, decodeURIComponent(linkMsg.linkName)); } catch (e) { gLinksStorage.addName(linkStoreId, linkMsg.linkName); }
+        if (linkMsg.linkName !== undefined && $.trim(linkMsg.linkName) !== '') {
+            try {
+                gLinksStorage.addName(linkStoreId, decodeURIComponent(linkMsg.linkName));
+            } catch (e) {
+                gLinksStorage.addName(linkStoreId, linkMsg.linkName);
+            }
         }
 
         // Push if suspected to be a good link
-        if (utils.isSuspectGoodLink(linkStoreId) === true) gLinksStorage.addSuspectGoodId(linkStoreId);
+        if (utils.isSuspectGoodLink(linkStoreId) === true) {
+            gLinksStorage.addSuspectGoodId(linkStoreId);
+        }
     }
 }
 function isMessageEmpty(msg) {
     if (msg.links.length < 1) {
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 }
@@ -66,70 +69,53 @@ function handleEmptyMessage() {
     buildMessageDiv(NO_LINKS_MSG);
 }
 
-////////////////////////////////////////////////////////////////////
-/// Build extension page with links received from content script
-////////////////////////////////////////////////////////////////////
+// Build extension page with links received from content script
 function buildThePage(msg) {
 
     // REFACTORING
     // Content script message should be translated in a single location
     // All other enitities should work with the storage
 
-//    function foo() {          // FOR DEBUG PURPOSES
-        try {
+    try {
 
-            clearDefaultMessage();
+        clearDefaultMessage();
 
-	    // TODO: display amount of files and a loading progress bar (- \ | /)
-	    // displayProgressMessage(msg.links.length);
+        // TODO: display amount of files and a loading progress bar (- \ | /)
+        // displayProgressMessage(msg.links.length);
 
-            if (isMessageEmpty(msg) === true) {
-                handleEmptyMessage();
-                return;
-            }
-
-            linksMsgToGlobalStorage(msg);
-
-            buildDelimiter(document.body);
-
-            buildFiltersDiv(document.body);
-
-            buildDelimiter(document.body);
-
-            setExtensionPageWidth(); // this is done especially before building the columns of the links table
-
-            buildLinksTable(document.body);
-
-            buildDelimiter(document.body);
-
-            buildFooter(document.body);
-
-            setExtensionPageHeight(document.body);
+        if (isMessageEmpty(msg) === true) {
+            handleEmptyMessage();
+            return;
         }
-        catch (e) {
-            utils.alertExceptionDetails(e);
-        }
-//    }                         // FOR DEBUG PURPOSES
-//    setTimeout(foo, 2000);    // FOR DEBUG PURPOSES
-}
 
+        linksMsgToGlobalStorage(msg);
 
-////////////////////////////////////////////////////////////////////
-/// Set extension page dimentions
-////////////////////////////////////////////////////////////////////
-function setExtensionPageHeight(extBodyElem) {
+        buildDelimiter(document.body);
+        buildFiltersDiv(document.body);
+        buildDelimiter(document.body);
+        // this is done especially before building the columns of the links table
+        setExtensionPageWidth();
 
-    $(document).height(POP_UP_EXT_HEIGHT_MAX);
-
-
-    if ($(document).height() > POP_UP_EXT_HEIGHT_MAX) {
-        $("#" + DOWNLOAD_LIST_DIV_ID).css("overflowY", "scroll");
-        var totalWithoutListHeight = $(document).height() - $("#" + DOWNLOAD_LIST_DIV_ID).height();
-        $("#" + DOWNLOAD_LIST_DIV_ID).height(POP_UP_EXT_HEIGHT_MAX - totalWithoutListHeight);
+        buildLinksTable(document.body);
+        buildDelimiter(document.body);
+        buildFooter(document.body);
+        setExtensionPageHeight(document.body);
+    } catch (e) {
+        utils.alertExceptionDetails(e);
     }
 }
-function setExtensionPageWidth() {
 
-    $(document.body).width(POP_UP_EXT_WIDTH_MAX - SCROLLER_WIDTH);
+// Set extension page dimentions
+function setExtensionPageHeight() {
+    $(document).height(POP_UP_EXT_HEIGHT_MAX);
+
+    if ($(document).height() > POP_UP_EXT_HEIGHT_MAX) {
+        $('#' + DOWNLOAD_LIST_DIV_ID).css('overflowY', 'scroll');
+        var totalWithoutListHeight = $(document).height() - $('#' + DOWNLOAD_LIST_DIV_ID).height();
+        $('#' + DOWNLOAD_LIST_DIV_ID).height(POP_UP_EXT_HEIGHT_MAX - totalWithoutListHeight);
+    }
 }
 
+function setExtensionPageWidth() {
+    $(document.body).width(POP_UP_EXT_WIDTH_MAX - SCROLLER_WIDTH);
+}

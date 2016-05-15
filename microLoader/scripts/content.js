@@ -1,39 +1,31 @@
-// ################################################################################################
-// ####### This script runs in the context of the active page.
-// ####### It sends back to the extension a list of all links present in the hosting DOM.
-// ####### It receives from the extension a list of links to download
-// ################################################################################################
+/*
+This script runs in the context of the active page.
+It sends back to the extension a list of all links present in the hosting DOM.
+It receives from the extension a list of links to download
+*/
 
-///////////////////////////////////////////////////////////
-/// Open connection with extension script
-///////////////////////////////////////////////////////////
-var port = chrome.extension.connect({ name: "content-extension" });
+// Open connection with extension script
+var port = chrome.extension.connect({ name: 'content-extension' });
 
-///////////////////////////////////////////////////////////
-/// Assign listener to messages from extension
-///////////////////////////////////////////////////////////
+// Assign listener to messages from extension
 port.onMessage.addListener(downloadFiles);
 
-///////////////////////////////////////////////////////////
-/// Get download file name from link
-///////////////////////////////////////////////////////////
+// Get download file name from link
 function getDownloadFileName(link) {
     var downloadFileName = utils.getFileName(link);
-    if (downloadFileName === "") {
-        downloadFileName = "download.download";
+    if (downloadFileName === '') {
+        downloadFileName = 'download.download';
     }
 
     return downloadFileName;
 }
 
-///////////////////////////////////////////////////////////
-/// Handle download file link hides in html
-///////////////////////////////////////////////////////////
+// Handle download file link hides in html
 function getDownloadFileLink(link) {
     var downloadFileName = utils.getFileName(link);
 
     // Same link in case of no file
-    if (downloadFileName === "") {
+    if (downloadFileName === '') {
         return link;
     }
 
@@ -45,66 +37,57 @@ function getDownloadFileLink(link) {
     return link;
 }
 
-///////////////////////////////////////////////////////////
-/// Extension messages handler
-///////////////////////////////////////////////////////////
+// Extension messages handler
 function downloadFiles(msg) {
 
     // Download files
-    for (var i = 0; i < msg.downloadFilesArrLen; i++) {
+    msg.downloadFilesArr.forEach(function(file) {
         try {
-
             // Create hidden download hyperlink
-            var downloadFileHyperLink = document.createElementNS("http://www.w3.org/1999/xhtml", "a");
-            downloadFileHyperLink.href = getDownloadFileLink(msg.downloadFilesArr[i]);
-            downloadFileHyperLink.download = getDownloadFileName(decodeURI(downloadFileHyperLink.href)); // thanks Hohwan Park :)
+            var downloadFileHyperLink = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+            downloadFileHyperLink.href = getDownloadFileLink(file);
+            downloadFileHyperLink.download = getDownloadFileName(
+                decodeURI(downloadFileHyperLink.href)); // thanks Hohwan Park :)
 
             // Create mouse click event
-            var event = document.createEvent("MouseEvents");
+            var event = document.createEvent('MouseEvents');
             event.initMouseEvent(
-				"click", true, false, self, 0, 0, 0, 0, 0,
-				false, false, false, false, 0, null
-			);
+                'click', true, false, self, 0, 0, 0, 0, 0,
+                false, false, false, false, 0, null
+            );
 
             // Trigger mouse click event on download hyperlink
             downloadFileHyperLink.dispatchEvent(event);
-        }
-        catch (exc) {
+        } catch (exc) {
             utils.alertExceptionDetails(exc);
         }
-    }
+    });
 }
 
-///////////////////////////////////////////////////////////
-/// Get all links on the active page
-///////////////////////////////////////////////////////////
+// Get all links on the active page
 function retreiveDownloadableFiles() {
     try {
         var downlaodableFilesList = [];
 
         // Retrive all links
-        var linkCnt = document.links.length;
-        var linkTxt;
-        for (var i = 0; i < linkCnt; ++i) {
-
+        document.links.forEach(function(linkText) {
             // Don't add empty links
-            if ($.trim(document.links[i].toString()) === "") {
-                continue;
+            if ($.trim(linkText.toString()) === '') {
+                return;
             }
 
-            downlaodableFilesList.push({ link: document.links[i].toString(), linkName: $.trim($(document.links[i]).text()) });
-        }
+            downlaodableFilesList.push({
+                link: linkText.toString(),
+                linkName: $.trim($(linkText).text())
+            });
+        });
 
         // Send links list to whom listens e.g. extension page
-        port.postMessage({ links: downlaodableFilesList});
-    }
-    catch (exc) {
+        port.postMessage({ links: downlaodableFilesList });
+    } catch (exc) {
         utils.alertExceptionDetails(exc);
     }
 }
 
-
-///////////////////////////////////////////////////////////
-/// Call the retreive function on script load
-///////////////////////////////////////////////////////////
+// Call the retreive function on script load
 retreiveDownloadableFiles();
