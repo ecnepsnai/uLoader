@@ -70,17 +70,18 @@ function retreiveDownloadableFiles() {
         var downlaodableFilesList = [];
 
         // Retrive all links
-        document.links.forEach(function(linkText) {
+        var linkCount = document.links.length;
+        for (var i = linkCount - 1; i >= 0; i--) {
             // Don't add empty links
-            if ($.trim(linkText.toString()) === '') {
+            if ($.trim(document.links[i].toString()) === '') {
                 return;
             }
 
             downlaodableFilesList.push({
-                link: linkText.toString(),
-                linkName: $.trim($(linkText).text())
+                link: document.links[i].toString(),
+                linkName: $.trim($(document.links[i]).text())
             });
-        });
+        }
 
         // Send links list to whom listens e.g. extension page
         port.postMessage({ links: downlaodableFilesList });
