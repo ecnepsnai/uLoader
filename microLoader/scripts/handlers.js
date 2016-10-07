@@ -170,13 +170,14 @@ function onDownloadClick() {
     try {
         // Get all checked links
         var checkedLinks = [];
+        var inputs = document.getElementsByTagName('input');
 
-        document.getElementsByTagName('input').forEach(function(input) {
-            if (input.type == 'checkbox' && input.id !== '' && input.checked) {
-                var linkId = input.id.toString().replace(LINK_ROW_ELEM_ID_PREFIX, '');
+        for (var i = 0, count = inputs.length; i < count; i++) {
+            if (inputs[i].type == 'checkbox' && inputs[i].id !== '' && inputs[i].checked) {
+                var linkId = inputs[i].id.toString().replace(LINK_ROW_ELEM_ID_PREFIX, '');
                 checkedLinks.push(gLinksStorage.getLink(linkId));
             }
-        });
+        }
 
         // Don't send message with empty list
         if (checkedLinks.length < 1) {
