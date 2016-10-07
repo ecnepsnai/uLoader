@@ -9,7 +9,7 @@
     "validateIndentation": 4,
     "disallowTrailingComma": true,
     "disallowUnusedParams": true,
-    "disallowMultipleVarDecl": true,
+    "disallowMultipleVarDecl": null,
 
     "disallowSpacesInsideObjectBrackets": null,
     "disallowImplicitTypeConversion": ["string"],

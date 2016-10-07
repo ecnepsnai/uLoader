@@ -1,0 +1,27 @@
+{
+  "name": "uloader",
+  "version": "2.0.0",
+  "description": "Quickly and easily download all files linked on any site.",
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:ecnepsnai/uLoader.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-batch": "^1.0.5",
+    "gulp-clean": "^0.3.2",
+    "gulp-data": "^1.2.1",
+    "gulp-file-include": "^1.0.0",
+    "gulp-htmlmin": "^2.0.0",
+    "gulp-stylus": "^2.4.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-watch": "^4.3.6"
+  },
+  "author": "Ian Spence",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/ecnepsnai/uLoader/issues"
+  },
+  "homepage": "https://github.com/ecnepsnai/uLoader#readme"
+}
