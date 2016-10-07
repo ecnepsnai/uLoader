@@ -19,7 +19,7 @@
     "gulp-watch": "^4.3.6"
   },
   "author": "Ian Spence",
-  "license": "GPLv3",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ecnepsnai/uLoader/issues"
   },
