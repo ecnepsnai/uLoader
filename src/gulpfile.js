@@ -12,7 +12,11 @@ var BUILD_DIRECTORY_BASE = './../uLoader';
 
 gulp.task('js', function() {
     return gulp.src('./js/*.js')
-        .pipe(uglify())
+        .pipe(gulp.dest(BUILD_DIRECTORY_BASE + '/assets/js'));
+});
+
+gulp.task('contrib', function() {
+    return gulp.src('./contrib/*.js')
         .pipe(gulp.dest(BUILD_DIRECTORY_BASE + '/assets/js'));
 });
 
@@ -71,4 +75,4 @@ gulp.task('clean', function() {
         .pipe(clean({force: true}));
 });
 
-gulp.task('default', ['styl', 'css', 'js', 'html', 'fonts', 'img']);
+gulp.task('default', ['styl', 'css', 'js', 'contrib', 'html', 'fonts', 'img']);
