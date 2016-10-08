@@ -26,6 +26,12 @@ $(function() {
             urlFunction: function(node) {
                 return $(node).attr('src');
             }
+        },
+        {
+            node: 'embed',
+            urlFunction: function(node) {
+                return $(node).attr('src');
+            }
         }
     ];
 
