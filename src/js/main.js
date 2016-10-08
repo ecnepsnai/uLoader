@@ -11,9 +11,27 @@ $(function() {
         });
     });
 
+    var port = chrome.runtime.connect({ name: MESSAGE_PORT });
+
+    var files = [],
+        $filters = $('#filters'),
+        $files = $('#files'),
+        $downloadButton = $('#download');
+
+    $downloadButton.attr('enabled', 'disabled');
+    $downloadButton.on('click', function() {
+        files.forEach(function(file) {
+            if (file.download) {
+                chrome.runtime.sendMessage({
+                    event: EVENT_DOWNLOAD_FILE,
+                    url: file.url
+                });
+            }
+        });
+    });
+
     var addFilter = function(filter) {
-        var $filters = $('#filters'),
-            $filter = $('<label><input type="checkbox" /> ' + filter + '</label>');
+        var $filter = $('<label><input type="checkbox" /> ' + filter + '</label>');
         $filters.append($filter);
     };
 
@@ -26,8 +44,7 @@ $(function() {
     };
 
     var addFile = function(file) {
-        var $files = $('#files'),
-            $checkboxTd = $('<td></td>'),
+        var $checkboxTd = $('<td></td>'),
             $checkbox = addFileCheckbox(file),
             $tr = $('<tr></tr>'),
             $fileTd = $('<td>' + file.url + '</td><td>' + file.type + '</td>');
@@ -41,9 +58,11 @@ $(function() {
             message.types.forEach(function(type) {
                 addFilter(type);
             });
-            message.files.forEach(function(file) {
+            files = message.files;
+            files.forEach(function(file) {
                 addFile(file);
             });
+            $downloadButton.attr('enabled', 'enabled');
         }
     });
 });

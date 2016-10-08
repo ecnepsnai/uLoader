@@ -17,12 +17,23 @@ $(function() {
     var files = [],
         types = [];
 
+    var linkFormatter = function(link) {
+        if (link.indexOf('//') === 0) {
+            link = document.location.protocol + link;
+        } else if (link.indexOf('http') !== 0) {
+            link = document.location.origin + link;
+        }
+
+        return link;
+    };
+
     var $nodes, link, components, type;
     searchNodes.forEach(function(searchNode) {
         $nodes = $('body').find(searchNode.node);
         $nodes.each(function(idx, node) {
             link = searchNode.urlFunction(node);
             if (link) {
+                link = linkFormatter(link);
                 components = link.split('.');
                 type = components[components.length - 1];
                 files.push({
