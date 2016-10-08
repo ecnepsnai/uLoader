@@ -48,7 +48,7 @@ $(function() {
     });
 
     chrome.runtime.sendMessage({
-        event: EVENT_LINKS_FOUND,
+        event: 'uLoader-links-found',
         files: files,
         types: types
     });

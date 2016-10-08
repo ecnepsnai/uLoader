@@ -1,7 +1,6 @@
 $(function() {
     let injectedFiles = [
         'jquery-3.1.1.min.js',
-        'const.js',
         'search.js'
     ];
 
@@ -10,8 +9,6 @@ $(function() {
             'file': 'uLoader/assets/js/' + file
         });
     });
-
-    var port = chrome.runtime.connect({ name: MESSAGE_PORT });
 
     var files = [],
         $filters = $('#filters'),
@@ -23,7 +20,7 @@ $(function() {
         files.forEach(function(file) {
             if (file.download) {
                 chrome.runtime.sendMessage({
-                    event: EVENT_DOWNLOAD_FILE,
+                    event: 'uLoader-download-file',
                     url: file.url
                 });
             }
@@ -54,7 +51,7 @@ $(function() {
     };
 
     chrome.runtime.onMessage.addListener(function(message) {
-        if (message.event === EVENT_LINKS_FOUND) {
+        if (message.event === 'uLoader-links-found') {
             message.types.forEach(function(type) {
                 addFilter(type);
             });
