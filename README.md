@@ -1,3 +1,3 @@
 # μLoader Chrome Extension
 
-*An updated clone of [Download Master](http://monadownloadmaster.blogspot.ca/)*
+A tiny chrome extension that lets you quickly and easily download files on a page. Inspired by Download Master.
