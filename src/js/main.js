@@ -51,10 +51,10 @@ $(function() {
     };
 
     var addFile = function(file, idx) {
-        var $checkboxTd = $('<td></td>'),
+        var $checkboxTd = $('<td class="checkbox"></td>'),
             $checkbox = addFileCheckbox(file, idx),
             $tr = $('<tr></tr>'),
-            $fileTd = $('<td>' + file.url + '</td><td>' + file.type + '</td>');
+            $fileTd = $('<td class="url">' + file.url + '</td><td class="type">' + file.type + '</td>');
         $checkboxTd.append($checkbox);
         $tr.append($checkboxTd).append($fileTd);
         $files.append($tr);
