@@ -6,12 +6,14 @@ var gulp = require('gulp'),
     watch = require('gulp-watch'),
     batch = require('gulp-batch'),
     fileinclude = require('gulp-file-include'),
-    clean = require('gulp-clean');
+    clean = require('gulp-clean'),
+    uglify = require('gulp-uglify');
 
 var BUILD_DIRECTORY_BASE = './../uLoader';
 
 gulp.task('js', function() {
     return gulp.src('./js/*.js')
+        .pipe(uglify())
         .pipe(gulp.dest(BUILD_DIRECTORY_BASE + '/assets/js'));
 });
 

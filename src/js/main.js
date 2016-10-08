@@ -1,5 +1,5 @@
 $(function() {
-    let injectedFiles = [
+    var injectedFiles = [
         'jquery-3.1.1.min.js',
         'search.js'
     ];

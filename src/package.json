@@ -15,7 +15,8 @@
     "gulp-file-include": "^1.0.0",
     "gulp-htmlmin": "^2.0.0",
     "gulp-stylus": "^2.4.0",
-    "gulp-uglify": "^1.5.3",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.6"
   },
   "author": "Ian Spence",
