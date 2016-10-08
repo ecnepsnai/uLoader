@@ -28,21 +28,31 @@ $(function() {
     });
 
     var addFilter = function(filter) {
-        var $filter = $('<label><input type="checkbox" /> ' + filter + '</label>');
-        $filters.append($filter);
+        var $checkbox = $('<input type="checkbox" />'),
+            $label = $('<label></label>');
+        $checkbox.on('click', function() {
+            files.forEach(function(file, idx) {
+                if (file.type === filter) {
+                    file.download = true;
+                    $('#file-' + idx).click();
+                }
+            });
+        });
+        $label.append($checkbox).append($('<span>' + filter + '</span>'));
+        $filters.append($label);
     };
 
-    var addFileCheckbox = function(file) {
-        var $checkbox = $('<input type="checkbox" />');
+    var addFileCheckbox = function(file, idx) {
+        var $checkbox = $('<input type="checkbox" id="file-' + idx + '"/>');
         $checkbox.on('click', function() {
             file.download = true;
         });
         return $checkbox;
     };
 
-    var addFile = function(file) {
+    var addFile = function(file, idx) {
         var $checkboxTd = $('<td></td>'),
-            $checkbox = addFileCheckbox(file),
+            $checkbox = addFileCheckbox(file, idx),
             $tr = $('<tr></tr>'),
             $fileTd = $('<td>' + file.url + '</td><td>' + file.type + '</td>');
         $checkboxTd.append($checkbox);
@@ -56,8 +66,8 @@ $(function() {
                 addFilter(type);
             });
             files = message.files;
-            files.forEach(function(file) {
-                addFile(file);
+            files.forEach(function(file, idx) {
+                addFile(file, idx);
             });
             $downloadButton.attr('enabled', 'enabled');
         }
