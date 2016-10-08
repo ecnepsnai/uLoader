@@ -16,11 +16,26 @@ h1
     color: #fff
     padding: 0.5em
 
-    label
-        padding-right: 0.5em
+    .text-filter
+        background-color: #FFB74D
+        color: #fff
+        border: 0
+        border-bottom: 1px solid #fff
+        padding: 2px
+        margin-right: 1em
+        outline: none
 
-        span
-            text-transform: uppercase
+        &::-webkit-input-placeholder
+            color: #fff
+
+    #filters
+        display: inline-block
+
+        label
+            padding-right: 0.5em
+
+            span
+                text-transform: uppercase
 
 .main
     height: 200px

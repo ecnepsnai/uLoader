@@ -13,7 +13,8 @@ $(function() {
     var files = [],
         $filters = $('#filters'),
         $files = $('#files'),
-        $downloadButton = $('#download');
+        $downloadButton = $('#download'),
+        $textFilter = $('.text-filter');
 
     $downloadButton.prop('disabled', true);
     $downloadButton.on('click', function() {
@@ -26,6 +27,30 @@ $(function() {
             }
         });
     });
+
+    $textFilter.on('input', $.debounce(250, function() {
+        var text = $textFilter.val();
+        if (text.length > 0) {
+            try {
+                var expression = new RegExp(text, 'g');
+                files.forEach(function(file, idx) {
+                    if (file.url.match(expression) !== null) {
+                        file.download = true;
+                    } else {
+                        file.download = false;
+                    }
+                    $('#file-' + idx).prop('checked', file.download);
+                });
+            } catch (e) {
+                // Don't worry about it
+            }
+        } else {
+            files.forEach(function(file, idx) {
+                file.download = false;
+                $('#file-' + idx).prop('checked', file.download);
+            });
+        }
+    }));
 
     var addFilter = function(filter) {
         var $checkbox = $('<input type="checkbox" />'),
