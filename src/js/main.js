@@ -15,7 +15,7 @@ $(function() {
         $files = $('#files'),
         $downloadButton = $('#download');
 
-    $downloadButton.attr('enabled', 'disabled');
+    $downloadButton.prop('disabled', true);
     $downloadButton.on('click', function() {
         files.forEach(function(file) {
             if (file.download) {
@@ -69,7 +69,10 @@ $(function() {
             files.forEach(function(file, idx) {
                 addFile(file, idx);
             });
-            $downloadButton.attr('enabled', 'enabled');
+
+            if (files.length > 0) {
+                $downloadButton.prop('disabled', false);
+            }
         }
     });
 });
