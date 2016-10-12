@@ -18,14 +18,16 @@ $(function() {
 
     $downloadButton.prop('disabled', true);
     $downloadButton.on('click', function() {
-        files.forEach(function(file) {
-            if (file.download) {
-                chrome.runtime.sendMessage({
-                    event: 'uLoader-download-file',
-                    url: file.url
-                });
-            }
+        var downloadFiles = files.filter(function(file) {
+            return file.download;
         });
+
+        if (downloadFiles && downloadFiles.length > 0) {
+            chrome.runtime.sendMessage({
+                event: 'uLoader-download-files',
+                files: downloadFiles
+            });
+        }
     });
 
     $textFilter.on('input', $.debounce(250, function() {

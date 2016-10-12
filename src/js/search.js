@@ -36,7 +36,8 @@ $(function() {
     ];
 
     var files = [],
-        types = [];
+        types = [],
+        filesByURL = {};
 
     var linkFormatter = function(link) {
         if (link.indexOf('//') === 0) {
@@ -71,13 +72,14 @@ $(function() {
         $nodes = $('body').find(searchNode.node);
         $nodes.each(function(idx, node) {
             link = searchNode.urlFunction(node);
-            if (link && linkFilter(link)) {
+            if (link && linkFilter(link) && !filesByURL[link]) {
                 link = linkFormatter(link);
                 type = typeFormatter(link);
                 files.push({
                     url: link,
                     type: type
                 });
+                filesByURL[link] = true;
                 if (!types.includes(type)) {
                     types.push(type);
                 }
