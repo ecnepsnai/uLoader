@@ -1,19 +1,15 @@
-var gulp = require('gulp'),
-    data = require('gulp-data'),
-    stylus = require('gulp-stylus'),
-    uglify = require('gulp-uglify'),
-    htmlmin = require('gulp-htmlmin'),
-    watch = require('gulp-watch'),
-    batch = require('gulp-batch'),
-    fileinclude = require('gulp-file-include'),
-    clean = require('gulp-clean'),
-    uglify = require('gulp-uglify');
+const gulp = require('gulp'),
+      data = require('gulp-data'),
+      stylus = require('gulp-stylus'),
+      htmlmin = require('gulp-htmlmin'),
+      watch = require('gulp-watch'),
+      batch = require('gulp-batch'),
+      clean = require('gulp-clean');
 
 var BUILD_DIRECTORY_BASE = './../uLoader';
 
 gulp.task('js', function() {
     return gulp.src('./js/*.js')
-        .pipe(uglify())
         .pipe(gulp.dest(BUILD_DIRECTORY_BASE + '/assets/js'));
 });
 
@@ -24,10 +20,6 @@ gulp.task('contrib', function() {
 
 gulp.task('html', function() {
     return gulp.src('./html/*.html')
-        .pipe(fileinclude({
-            prefix: '@@',
-            basepath: './include'
-        }))
         .pipe(htmlmin({
             collapseWhitespace: true
         }))
