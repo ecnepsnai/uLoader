@@ -68,10 +68,8 @@ var typeFormatter = function(link) {
 
 var nodes, link, components, type;
 searchNodes.forEach(function(searchNode) {
-    nodes = document.getElementsByTagName(searchNode.node);
-    for (var i = 0, count = nodes.length; i < count; i++) {
-        var node = nodes[i];
-
+    $nodes = $('body').find(searchNode.node);
+    $nodes.each(function(idx, node) {
         link = searchNode.urlFunction(node);
         if (link === undefined || !linkFilter(link)) {
             return;
@@ -90,7 +88,7 @@ searchNodes.forEach(function(searchNode) {
                 types.push(type);
             }
         }
-    }
+    });
 });
 
 chrome.runtime.sendMessage({
