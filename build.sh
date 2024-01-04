@@ -1,7 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+set -e
 
-cd src
-npm install
-gulp
-cd ../
-zip -r uLoader.zip manifest.json uLoader/
+rm -f uloader.zip uloader.xpi
+zip uloader.zip *.js *.html *.css *.svg *.json 
+mv uloader.zip uloader.xpi

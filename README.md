@@ -1,3 +1,3 @@
-# μLoader Chrome Extension
+# μLoader Firefox Extension
 
-A tiny chrome extension that lets you quickly and easily download files on a page. Inspired by Download Master.
+A tiny Firefox extension that lets you quickly and easily download files on a page.
