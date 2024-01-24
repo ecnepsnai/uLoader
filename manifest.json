@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "μloader",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Quickly and easily find and download files from any page",
   "icons": {
     "48": "icon.svg",

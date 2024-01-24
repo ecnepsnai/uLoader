@@ -7,21 +7,21 @@
         '.png'
     ];
 
-    let links = [];
+    let links = {};
     Array.from(document.querySelectorAll('img')).forEach(img => {
         fileExtensions.forEach(ext => {
             if (img.src.endsWith(ext)) {
-                links.push(img.src);
+                links[img.src] = true;
             }
         });
     });
     Array.from(document.querySelectorAll('a')).forEach(a => {
         fileExtensions.forEach(ext => {
             if (a.href.endsWith(ext)) {
-                links.push(a.href);
+                links[a.href] = true;
             }
         });
     });
 
-    browser.runtime.sendMessage(links);
+    browser.runtime.sendMessage(Object.keys(links));
 })();

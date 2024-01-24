@@ -1,3 +1,4 @@
+const downloadButton = document.querySelector('#download_button');
 const mediaLinks = [];
 
 const onRecieveLinks = (links) => {
@@ -75,8 +76,7 @@ const buildCheckbox = (link) => {
     return checkbox;
 };
 
-const downloadButton = document.querySelector('#download_button');
-downloadButton.onclick = () => {
+downloadButton.onclick = async () => {
     const filesToDownload = mediaLinks.filter(link => {
         return link.checked;
     });
@@ -85,18 +85,22 @@ downloadButton.onclick = () => {
         return;
     }
 
-    filesToDownload.forEach(file => {
-        browser.downloads.download({
-            url: file.url
+    downloadButton.disabled = true;
+
+    for (var i = 0; i < filesToDownload.length; i++) {
+        await browser.downloads.download({
+            url: filesToDownload[i].url
         });
-    });
+    }
 };
+
 const setDownloadButtonState = () => {
-    const index = mediaLinks.findIndex(link => {
+    const links = mediaLinks.filter(link => {
         return link.checked;
     });
-    
-    downloadButton.disabled = index === -1;
+
+    downloadButton.innerText = 'Download (' + links.length + ')';
+    downloadButton.disabled = links.length === 0;
 };
 
 const searchInput = document.querySelector('#search');
@@ -106,8 +110,10 @@ searchInput.oninput = () => {
         return;
     }
 
+    const pattern = new RegExp(searchInput.value);
+
     buildTable(mediaLinks.filter(link => {
-        return link.url.includes(searchInput.value);
+        return link.url.search(pattern) != -1;
     }));
 };
 
